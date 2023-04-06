@@ -8,14 +8,13 @@
         class="card"
         @mouseover="showDetails(index)"
         @mouseleave="hideDetails(index)"
+        @click="goToProject(project.url)"
       >
-        <a :href="project.url" target="_blank">
           <img :src="project.img" alt="Project Image" />
           <div v-if="project.showDetails" class="details">
             <h3>{{ project.name }}</h3>
             <p>{{ project.description }}</p>
           </div>
-        </a>
         <div class="mobile-info">
           <h3>{{ project.name }}</h3>
           <p>{{ project.description }}</p>
@@ -48,22 +47,32 @@ export default {
       projects.value[index].showDetails = false;
     }
 
+    function goToProject(url: string): void {
+      window.open(url, '_blank');
+    }
+
     return {
       projects,
       showDetails,
-      hideDetails
+      hideDetails,
+      goToProject
     };
   }
 };
 </script>
 
 <style scoped>
+.container {
+  width: 100%;
+}
 .card {
-  position: relative;
-  width: 78%;
-  margin: 0 auto;
+  margin: 25px auto;
   border-bottom: 1px solid rgba(255, 255, 255, 0.478);
-  padding: 25px;
+  /* padding: 25px; */
+}
+
+.card:hover {
+  cursor: pointer;
 }
 
 .card img {
@@ -75,6 +84,7 @@ export default {
 
 .details {
   position: absolute;
+  z-index: 100;
   top: 0;
   left: 0;
   width: 100%;
@@ -83,30 +93,34 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(0, 0, 0);
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.965);
   padding: 1rem;
-  opacity: 0;
   transition: opacity 0.3s ease-in-out;
   text-align: center;
   font-size: 22px;
   line-height: 30px;
 }
 
+.details h3 {
+  color: #ee6817;
+}
 .details p {
   /* background-color: rgb(23, 23, 23); */
+  width: 100%;
   letter-spacing: 1.2px;
-  padding: 22px
+  padding: 22px;
+  color: #fff;
 }
 
-.card:hover .details {
+/* .card:hover .details {
   opacity: 1;
-}
+} */
 
 .projects-container {
   overflow-y: scroll;
   height: 75vh;
   width: 100%;
+  padding-right: 20px;
 }
 
 .projects-container::-webkit-scrollbar {
