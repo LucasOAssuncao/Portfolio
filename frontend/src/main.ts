@@ -7,6 +7,7 @@ import './assets/main.css';
 import { faInstagram, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faLocationDot, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Title from '@/components/Title.vue';
+import Loading from '@/components/Loading.vue'
 
 const app = createApp(App);
 
@@ -15,4 +16,5 @@ library.add(faInstagram, faLinkedinIn, faGithub, faLocationDot, faEnvelope);
 app.use(router);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('title-component', Title);
+app.component('loading-component', Loading);
 app.mount('#app');

@@ -1,40 +1,66 @@
 <template>
-  <div class="home-container">
-    <div class="title">
-      <h2>
-        <span class="intro">Hello, i am</span>
-        <br />
-        {{ user?.name }}
-      </h2>
-      <p class="role">{{ user?.role }}</p>
-    </div>
-    <div class="img-container">
-      <img class="img-float" src="../assets/logo_lucas.png" alt="logo" />
+  <loading-component v-if="isLoading" />
+  <div v-else>
+    <div class="home-container">
+      <div class="title">
+        <h2>
+          <span class="intro">Hello, i am</span>
+          <br />
+          {{ user?.name }}
+        </h2>
+        <p class="role">{{ user?.role }}</p>
+      </div>
+      <div class="img-container">
+        <img class="img-float" src="../assets/logo_lucas.png" alt="logo" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, watchEffect } from 'vue';
 import type IUser from '../interfaces/IUser';
+import axios from 'axios';
+import Loading from '../components/Loading.vue';
 
 export default {
+  components: {
+    Loading
+  },
   setup() {
     const user = ref<IUser>();
+    const isLoading = ref(true);
 
-    onBeforeMount(() => {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        user.value = JSON.parse(userData);
+    onBeforeMount(async () => {
+      try {
+        axios
+          .get('https://api-portfolio-xi30.onrender.com/user/6421f658ea7240b7b4b5010b')
+          .then((response) => {
+            user.value = response.data;
+            localStorage.setItem('user', JSON.stringify(response.data));
+            isLoading.value = false;
+          });
+
+        axios
+          .get('https://api-portfolio-xi30.onrender.com/project/search?author=lucas')
+          .then((response) => {
+            localStorage.setItem('projects', JSON.stringify(response.data));
+          });
+      } catch (error) {
+        console.error(error);
       }
     });
 
-    return { user };
+    return { user, isLoading };
   }
 };
 </script>
 
 <style scoped>
+.load {
+  text-align: center;
+  font-style: 40px;
+}
 .home-container {
   padding: 70px;
   display: flex;
@@ -255,7 +281,7 @@ export default {
   }
 }
 
-@media (min-width: 1940px) { 
+@media (min-width: 1940px) {
   .intro {
     font-weight: 300;
     font-size: 90px;
@@ -290,6 +316,5 @@ export default {
     height: auto;
     display: flex;
   }
-
 }
 </style>
