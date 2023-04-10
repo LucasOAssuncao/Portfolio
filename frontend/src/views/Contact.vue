@@ -38,7 +38,7 @@
       <input required type="text" name="name" placeholder="Your name" />
       <input required type="email" name="email" placeholder="Email" />
       <textarea required name="message" id="" cols="30" rows="10" placeholder="Message"></textarea>
-      <input type="hidden" name="redirectTo" value="http://localhost:5173/contact" />
+      <input type="hidden" name="redirectTo" value="https://lucasotoni.vercel.app/contact" />
       <button type="submit" value="submit" class="button button-form">Send</button>
     </form>
   </div>
